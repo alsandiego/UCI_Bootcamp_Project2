@@ -55,5 +55,26 @@ def department():
     # Return a list of the column names (sample names)
     return jsonify(list(df["department"].values))
 
+@app.route("/position/<year>")
+def position(year):
+    """Return department, position."""
+    stmt = db.session.query(oc_salary_db).statement
+    df = pd.read_sql_query(stmt, db.session.bind)
+
+    # Filter the data based on the sample number and
+    # only keep rows with values above 1
+    sample_data = df.loc[(df[year] >0) & (df["department"]== "ACCOUNTING"), ["department", "position", year]]
+
+    # Sort by sample
+    sample_data.sort_values(by="department", ascending=True, inplace=True)
+
+    # Format the data to send as json
+    data = {
+        "department": sample_data.department.values.tolist(),
+        "salary": sample_data[year].values.tolist(),
+        "position": sample_data.position.tolist(),
+    }
+    return jsonify(data)
+
 if __name__ == "__main__":
     app.run(debug=True)
