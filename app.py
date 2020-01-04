@@ -44,5 +44,16 @@ def year():
     # Return a list of the column names (sample names)
     return jsonify(list(df.columns)[3:])
 
+@app.route("/department")
+def department():
+    """Return a list of departments."""
+    
+    # Use Pandas to perform the sql query
+    stmt = db.session.query(oc_salary_db).statement
+    df = pd.read_sql_query("select department from oc_salary group by department", db.session.bind, coerce_float=False)
+
+    # Return a list of the column names (sample names)
+    return jsonify(list(df["department"].values))
+
 if __name__ == "__main__":
     app.run(debug=True)
