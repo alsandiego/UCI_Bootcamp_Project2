@@ -3,7 +3,7 @@
 //   // @TODO: Complete the following function that builds the metadata panel
 
 //   // Use `d3.json` to fetch the metadata for a sample
-//   var url = `/position/${year}`;
+//   var url = `/year/${year}`;
 //   d3.json(url).then(function(response){
 //     // Use d3 to select the panel with id of `#sample-metadata`
 //     var sample_meta = d3.select("#sample-metadata");
@@ -68,7 +68,7 @@ function buildCharts(year) {
     dict.sort(function(a, b) {
       return parseFloat(b.total_salary) - parseFloat(a.total_salary);
     });
-    dict = dict.slice(0, 10);
+    // dict = dict.slice(0, 10);
 
     var data_pie = [{
       type: "pie",
@@ -80,8 +80,8 @@ function buildCharts(year) {
     }]
     
     var layout_pie = {
-      height: 500,
-      width: 500,
+      height: 800,
+      width: 800,
       showlegend: true
       }
 
@@ -107,6 +107,7 @@ function init() {
 
     // Use the first sample from the list to build the initial plots
       const firstData = listYear[0];
+      // buildMetadata(firstData);
       buildCharts(firstData);
     });
   }
@@ -114,6 +115,7 @@ function init() {
   function optionChanged(newSample) {
     // Fetch new data each time a new sample is selected
     buildCharts(newSample);
+    // buildMetadata(newSample);
   }
 
   // Initialize the dashboard
