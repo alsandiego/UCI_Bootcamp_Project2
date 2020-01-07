@@ -44,6 +44,29 @@ def year():
     # Return a list of the column names (sample names)
     return jsonify(list(df.columns)[3:])
 
+# shows the department salary total for selected year
+@app.route("/year/<year>")
+def year_dept_total(year):
+    """Return department total for selected year"""
+    
+    # Use Pandas to perform the sql query
+    stmt = db.session.query(oc_salary_db).statement
+    df = pd.read_sql_query(stmt, db.session.bind)
+
+
+    # sample_data = df.loc[(df[year] > 0), ["department", year]]
+    groupby_sum = df.groupby(["department"])[year].sum().reset_index()
+
+    # Sort by sample
+    groupby_sum.sort_values(by="department", ascending=True, inplace=True)
+
+    # Format the data to send as json
+    data = {
+        "department": groupby_sum.department.tolist(),
+        "total_salary": groupby_sum[year].values.tolist(),
+    }
+    return jsonify(data)
+
 # shows salary and position for selected year and department
 @app.route("/<yr>/<dept>")
 def year_dept(yr, dept):
@@ -55,10 +78,8 @@ def year_dept(yr, dept):
     dept_total = df.loc[(df[yr] >0) & (df["department"] == dept.upper()), [dept, "position", yr]]
     # Format the data to send as json
     data = {
-        "department": dept_total[dept].values.tolist(),
         "salary": dept_total[yr].values.tolist(),
         "position": dept_total.position.tolist()
-        
     }
     return jsonify(data)
 
@@ -116,6 +137,25 @@ def position(year):
         "department": sample_data.department.values.tolist(),
         "salary": sample_data[year].values.tolist(),
         "position": sample_data.position.tolist(),
+    }
+    return jsonify(data)
+
+# shows salary for selected department and position
+@app.route("/bubble/<department>/<position>")
+def bubblechart(department, position):
+    """Return all salary for dept and position selected."""
+    # Use Pandas to perform the sql query
+    stmt = db.session.query(oc_salary_db).statement
+    df = pd.read_sql_query(stmt, db.session.bind)
+    # print(dept.upper())
+    dept_total = df.loc[(df["department"] == department.upper()) & (df["position"] == position.upper()), [department, position, "2014","2015","2016","2017","2018"]]
+    # Format the data to send as json
+    data = {
+        "2014": dept_total["2014"].tolist(),
+        "2015": dept_total["2015"].tolist(),
+        "2016": dept_total["2016"].tolist(),
+        "2017": dept_total["2017"].tolist(),
+        "2018": dept_total["2018"].tolist()
     }
     return jsonify(data)
 
