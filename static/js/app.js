@@ -107,7 +107,7 @@ function buildCharts(year) {
     }
     }]
     table = document.getElementById("table");
-    Plotly.plot(table, dept_table);
+    Plotly.newPlot(table, dept_table);x
 
   });
 
@@ -205,6 +205,29 @@ function buildCharts2(department) {
     var layout = {barmode: 'group'}
     scatter = document.getElementById("scatter");
     Plotly.newPlot("scatter", data, layout, {responsive: true})
+
+
+    //////////// to show department table
+    var dept_values = [position,salary2014,salary2015,salary2016,salary2017,salary2018]
+    var dept_table = [{
+    type: 'table',
+    header: {
+      values: [["<b>Position</b>"], ["<b>2014</b>"],["<b>2015</b>"],["<b>2016</b>"],["<b>2017</b>"],["<b>2018</b>"]],
+      align: "center",
+      line: {width: 1, color: 'black'},
+      fill: {color: "grey"},
+      font: {family: "Arial", size: 12, color: "white"}
+    },
+    cells: {
+      values: dept_values,
+      align: "center",
+      line: {color: "black", width: 1},
+      font: {family: "Arial", size: 11, color: ["black"]}
+    }
+    }]
+    table = document.getElementById("table2");
+    Plotly.newPlot(table, dept_table);
+
   }); 
 };
 
@@ -226,14 +249,14 @@ function init2() {
     });
   }
 
+init2();
+
 //   function optionChanged(newDept) {
 //   // Fetch new data each time a new sample is selected
 //   buildCharts(newDept);
 //   // buildMetadata(newSample);
 // };
 
-  // Initialize the dashboard
-init2();
 
     // @TODO: Build a Bubble Chart using the sample data
     // var trace1 = {
