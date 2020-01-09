@@ -33,6 +33,11 @@ def index():
     """Return the homepage."""
     return render_template("index.html")
 
+@app.route("/page2")
+def index2():
+    """Return the homepage."""
+    return render_template("page2.html")
+    
 @app.route("/year")
 def year():
     """Return a list of years."""
