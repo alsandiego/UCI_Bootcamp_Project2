@@ -164,5 +164,33 @@ def bubblechart(department, position):
     }
     return jsonify(data)
 
+
+@app.route("/bubble2/<department>")
+def bubble2(department):
+    """Return department, position."""
+    stmt = db.session.query(oc_salary_db).statement
+    df = pd.read_sql_query(stmt, db.session.bind)
+
+    # Filter the data based on the sample number and
+    # only keep rows with values above 1
+
+    # sample_data = df.loc[(df[year] >0) & (df["department"]== "ACCOUNTING"), ["department", "position", year]]
+
+    sample_data = df.loc[(df["department"] == department.upper()), ["position", "2014","2015","2016","2017","2018"]]
+
+    # Sort by sample
+    sample_data.sort_values(by="position", ascending=True, inplace=True)
+
+    # Format the data to send as json
+    data = {
+        "position": sample_data.position.tolist(),
+        "2014": sample_data["2014"].tolist(),
+        "2015": sample_data["2015"].tolist(),
+        "2016": sample_data["2016"].tolist(),
+        "2017": sample_data["2017"].tolist(),
+        "2018": sample_data["2018"].tolist()
+    }
+    return jsonify(data)
+
 if __name__ == "__main__":
     app.run(debug=True)

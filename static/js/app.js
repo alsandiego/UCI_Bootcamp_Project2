@@ -137,6 +137,7 @@ function init() {
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
   buildCharts(newSample);
+  buildCharts2(newSample)
   // buildMetadata(newSample);
 }
 
@@ -147,41 +148,65 @@ init();
 // PAGE 2 - VIEW BY DEPT //
 ///////////////////////////
 
-// function buildCharts2(department) {
+function buildCharts2(department) {
 
   // @TODO: Use `d3.json` to fetch the sample data for the plots
-  // var scatterURL =  `/department2/${department}`;
-  // d3.json(scatterURL).then(function(data){
-    // x axis will be the years
-    var year = ["2014","2015","2016","2017","2018"];
-    // values (y axis) will be salary amount
-    var salary = [100, 200, 300, 400, 500]
-    //text for each point is job title 
-    var jobTitle = ["analyst","analyst I","analyst II","manager","sr. manager"];
-    //each trace is a department
-    var departmentTrace = {
-      x: year,
-      y: salary,
-      mode: 'markers',
-      type: 'scatter',
-      text: jobTitle,
-      name: 'dept',
-      marker: {
-        size: 12,
-        color: "blue",
-        opacity: 0.5,
-        labels: jobTitle
-      }
+  var scatterURL =  `/bubble2/${department}`;
+  d3.json(scatterURL).then(function(data){
+    // our data dict
+    var position = data.position
+    var salary2014 = data["2014"]
+    var salary2015 = data["2015"]
+    var salary2016 = data["2016"]
+    var salary2017 = data["2017"]
+    var salary2018 = data["2018"]
+
+    var trace1 = {
+      x: position,
+      y: salary2014,
+      // mode: 'markers',
+      type: 'bar',
+      name: "2014"
     };
-    var scatterData = [departmentTrace]
-    var layout = {
-      title: 'OC Public Employees Salary History',
-      xaxis: { title: 'Year'},
-      yaxis: { title: 'Salary ($)'}
+    
+    var trace2 = {
+      x: position,
+      y: salary2015,
+      // mode: 'markers',
+      type: 'bar',
+      name: "2015"
     };
-    Plotly.newPlot("scatter", scatterData, layout, {responsive: true})
-  // }); 
-// }
+
+    var trace3 = {
+      x: position,
+      y: salary2016,
+      // mode: 'markers',
+      type: 'bar',
+      name: "2016"
+    };
+    
+    var trace4 = {
+      x: position,
+      y: salary2017,
+      // mode: 'markers',
+      type: 'bar',
+      name: "2017"
+    };
+
+    var trace5 = {
+      x: position,
+      y: salary2018,
+      // mode: 'markers',
+      type: 'bar',
+      name: "2018"
+    };
+    
+    var data = [trace1, trace2, trace3, trace4, trace5];
+    var layout = {barmode: 'group'}
+    scatter = document.getElementById("scatter");
+    Plotly.newPlot("scatter", data, layout, {responsive: true})
+  }); 
+};
 
 function init2() {
   // Grab a reference to the dropdown select element
@@ -197,8 +222,7 @@ function init2() {
 
   // Use the first sample from the list to build the initial plots
       const firstData2 = listDepartment[0];
-    // buildMetadata(firstData);
-      // buildCharts(firstData2);
+      buildCharts2(firstData2);
     });
   }
 
