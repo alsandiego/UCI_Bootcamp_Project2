@@ -36,26 +36,26 @@ function buildCharts(year) {
     var department = data.department;
     
 
-    // @TODO: Build a Bubble Chart using the sample data
-    var trace1 = {
-      x: department,
-      y: total_salary,
-      text: department,
-      mode: 'markers',
-      marker: {
-      size: total_salary,
-      color: department
-      }
-    };
+    // // Bubble Chart using the data
+    // var trace1 = {
+    //   x: department,
+    //   y: total_salary,
+    //   text: department,
+    //   mode: 'markers',
+    //   marker: {
+    //   size: total_salary,
+    //   color: department
+    //   }
+    // };
     
-    var data_bubble = [trace1];
+    // var data_bubble = [trace1];
     
-    var layout = {
-      xaxis: { title: 'Departments'}
-    };
+    // var layout = {
+    //   xaxis: { title: 'Departments'}
+    // };
     
-    bubble = document.getElementById("bubble");
-    Plotly.newPlot(bubble, data_bubble, layout);
+    // bubble = document.getElementById("bubble");
+    // Plotly.newPlot(bubble, data_bubble, layout);
 
     /// build Bubble chart
     var dict = [];
@@ -107,12 +107,11 @@ function buildCharts(year) {
     }
     }]
     table = document.getElementById("table");
-    Plotly.newPlot(table, dept_table);x
+    Plotly.newPlot(table, dept_table);
 
   });
 
 };
-
 
 function init() {
     // Grab a reference to the dropdown select element
@@ -131,13 +130,15 @@ function init() {
       const firstData = listYear[0];
       // buildMetadata(firstData);
       buildCharts(firstData);
+      buildCanvas(firstData);
     });
   }
   
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
   buildCharts(newSample);
-  buildCharts2(newSample)
+  buildCharts2(newSample);
+  buildCanvas(newSample);
   // buildMetadata(newSample);
 }
 
@@ -278,3 +279,63 @@ init2();
     
     // bubble = document.getElementById("bubble");
     // Plotly.newPlot(bubble, data_bubble, layout);
+
+function buildCanvas(year) {
+
+        // @TODO: Use `d3.json` to fetch the sample data for the plots
+  var samples_url =  `/year/${year}`;
+  d3.json(samples_url).then(function(data){
+    
+    // var item = data.item;
+    var total_salary = data.total_salary;
+    var department = data.department;
+          /////////////  test canvas chart
+    var chart_config =
+      {
+        type: 'bar',
+        data: {
+            labels: department,
+            datasets: [{
+                label: 'Department Total Salary',
+                data: total_salary,
+                // backgroundColor: [
+                //     'rgba(255, 99, 132, 0.2)',
+                //     'rgba(54, 162, 235, 0.2)',
+                //     'rgba(255, 206, 86, 0.2)',
+                //     'rgba(75, 192, 192, 0.2)',
+                //     'rgba(153, 102, 255, 0.2)',
+                //     'rgba(255, 159, 64, 0.2)'
+                // ],
+                // borderColor: [
+                //     'rgba(255, 99, 132, 1)',
+                //     'rgba(54, 162, 235, 1)',
+                //     'rgba(255, 206, 86, 1)',
+                //     'rgba(75, 192, 192, 1)',
+                //     'rgba(153, 102, 255, 1)',
+                //     'rgba(255, 159, 64, 1)'
+                // ],
+                borderWidth: 1
+            }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+    }}
+    var ctx = document.getElementById("bubble");
+    var myChart = new Chart(ctx, chart_config)
+        
+      });
+};
+
+function addData(chart, label, data) {
+  chart.data.labels = label
+  chart.data.datasets.forEach((dataset) => {
+      dataset.data = data;
+  });
+  chart.update();
+}

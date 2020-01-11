@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>UCI Project 2: Dashboard</title>
-  <!-- Bootstrap Theme Sandstone CDN-->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/sandstone/bootstrap.min.css">
+  <!-- Bootstrap Theme Litera CDN-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/litera/bootstrap.min.css">
+
 </head>
 
 <body>
@@ -27,7 +28,7 @@
       </div>
       
     </div>
-    <div class="row">
+    <div class="row align-items-center">
       <div class="col-md-2">
         <div class="well">
           <h5>Year:</h5>
@@ -45,14 +46,19 @@
       </div>
     </div>
   </div>
-  <div class="row justify-content-center">
+  <div class="row align-items-center">
     <div class="col-md-12">
       <div id="table"></div>
     </div>
   </div>
-  <div class="row justify-content-center">
+  <!-- <div class="row justify-content-center">
     <div class="col-md-12">
       <div id="bubble"></div>
+    </div>
+  </div> -->
+  <div class="row justify-content-md-center">
+    <div class="col-md-6">
+      <canvas id="bubble" width="100" height="100"></canvas>
     </div>
   </div>
 
@@ -60,6 +66,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+  <!-- chart js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
 
 </body>
 
