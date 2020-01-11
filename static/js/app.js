@@ -136,6 +136,7 @@ function init() {
   
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
+  clearBubble()
   buildCharts(newSample);
   buildCharts2(newSample);
   buildCanvas(newSample);
@@ -280,6 +281,8 @@ init2();
     // bubble = document.getElementById("bubble");
     // Plotly.newPlot(bubble, data_bubble, layout);
 
+var myChart;
+
 function buildCanvas(year) {
 
         // @TODO: Use `d3.json` to fetch the sample data for the plots
@@ -327,15 +330,22 @@ function buildCanvas(year) {
                 }
     }}
     var ctx = document.getElementById("bubble");
-    var myChart = new Chart(ctx, chart_config)
+    myChart = new Chart(ctx, chart_config)
         
       });
 };
 
 function addData(chart, label, data) {
+
   chart.data.labels = label
   chart.data.datasets.forEach((dataset) => {
       dataset.data = data;
   });
   chart.update();
+}
+
+function clearBubble()
+{
+  myChart.destroy()
+  document.getElementById("bubble").innerHTML = "";
 }
