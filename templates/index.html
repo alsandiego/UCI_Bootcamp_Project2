@@ -21,15 +21,20 @@
     </div>
     <div class="row">
       <div class="col-md-12 text-center">
-        <!-- <button type="button" class="btn btn-primary btn-lg">Year</button>
-        <button type="button" class="btn btn-secondary btn-lg">Department</button> -->
         <a href="/" type="button" class="btn btn-primary btn-lg" >Year</a>
         <a href="page2" type="button" class="btn btn-secondary btn-lg">Department</a>
       </div>
-      
     </div>
+    <br/>
     <div class="row align-items-center">
-      <div class="col-md-2">
+      <div class="col-md-12 text-center">
+        <h5>Year:</h5>
+        <select id="selDataset" onchange="optionChanged(this.value)"></select>
+      </div>
+    </div>
+    <br/>
+    <div class="row align-items-center">
+      <!-- <div class="col-md-2">
         <div class="well">
           <h5>Year:</h5>
           <select id="selDataset" onchange="optionChanged(this.value)"></select>
@@ -40,18 +45,22 @@
           </div>
           <div id="sample-metadata" class="panel-body"></div>
         </div>
-      </div>
-      <div class="col-md-10">
+      </div> -->
+      <div class="col-md-6 align-items-center">
         <div id="pie"></div>
+      </div>
+      <div class="col-md-6 align-items-center">
+        <div id="pieTop10"></div>
       </div>
     </div>
   </div>
+  <br/>
   <div class="row align-items-center">
     <div class="col-md-6">
       <div id="table"></div>
     </div>
     <div class="col-md-6">
-      <canvas id="bubble" width="100" height="100"></canvas>
+      <canvas id="bubble" margin=20></canvas>
     </div>
   </div>
   <!-- <div class="row justify-content-center">

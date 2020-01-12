@@ -48,18 +48,30 @@ function buildCharts(year) {
 
     var data_pie = [{
       type: "pie",
-      values: dict.map(row => row.total_salary),
-      labels: dict.map(row => row.department),
+      // values: dict.map(row => row.total_salary),
+      // labels: dict.map(row => row.department),
+      values: total_salary,
+      labels: department,
       textinfo: "label+percent",
       textposition: "inside",
-      automargin: true
+      automargin: true,
+      sort: false
     }]
     
     var layout_pie = {
-      height: 800,
-      width: 800,
+      autosize: true,
+      // height: 800,
+      // width: 1080,
+      title: {
+        text:'OC Department Salary',
+        font: {
+          family: 'Courier New, monospace',
+          size: 24
+        },
+      margin: {"t": 0, "b": 0, "l": 0, "r": 0},
       showlegend: true
       }
+    };
 
     pie = document.getElementById("pie");
     Plotly.newPlot(pie, data_pie, layout_pie, { responsive: true });
@@ -107,6 +119,7 @@ function init() {
       // buildMetadata(firstData);
       buildCharts(firstData);
       buildCanvas(firstData);
+      top10pie(firstData);
     });
   } 
 
@@ -164,15 +177,6 @@ function buildCanvas(year) {
       });
 };
 
-function addData(chart, label, data) {
-
-  chart.data.labels = label
-  chart.data.datasets.forEach((dataset) => {
-      dataset.data = data;
-  });
-  chart.update();
-}
-
 function clearBubble()
 {
   myChart.destroy()
@@ -184,8 +188,55 @@ function optionChanged(newSample) {
   clearBubble()
   buildCharts(newSample);
   buildCanvas(newSample);
+  top10pie(newSample);
   // buildMetadata(newSample);
 }
 
 // Initialize the dashboard
 init();
+
+function top10pie(year) {
+  var samples_url =  `/year/${year}`;
+  d3.json(samples_url).then(function(data){
+
+    var dict = [];
+    for (var c = 0; c < data.department.length; c++) {
+      dict.push({
+          "department": data.department[c],
+          "total_salary": data.total_salary[c]
+      });
+    }
+    dict.sort(function(a, b) {
+      return parseFloat(b.total_salary) - parseFloat(a.total_salary);
+    });
+    dict = dict.slice(0, 10);
+
+    var data_pie = [{
+      type: "pie",
+      values: dict.map(row => row.total_salary),
+      labels: dict.map(row => row.department),
+      textinfo: "label+percent",
+      textposition: "inside",
+      automargin: true
+    }]
+
+    var layout_pie = {
+      autosize: true,
+      // height: 800,
+      // width: 1080,
+      title: {
+        text:'Top 10 Department and Salary',
+        font: {
+          family: 'Courier New, monospace',
+          size: 24
+        },
+      margin: {"t": 0, "b": 0, "l": 0, "r": 0},
+      showlegend: true
+      }
+    };
+
+    pie = document.getElementById("pieTop10");
+    Plotly.newPlot(pie, data_pie, layout_pie, { responsive: true });
+
+})
+}
