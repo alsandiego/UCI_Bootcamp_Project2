@@ -8,6 +8,7 @@
   <title>UCI Project 2: Dashboard</title>
   <!-- Bootstrap Theme Litera CDN-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/litera/bootstrap.min.css">
+
 </head>
 
 <body>
@@ -24,27 +25,28 @@
         <a href="page2" type="button" class="btn btn-primary btn-lg">Department</a>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-2">
-        <div class="well">
+    <br/>
+    <div class="row align-items-center">
+      <div class="col-md-12 text-center">
           <h5>Department:</h5>
           <select id="selDataset2" onchange="optionChanged(this.value)"></select>
         </div>
-        <div class="panel panel-primary">
+    </div>
+    <br/>
+        <!-- <div class="panel panel-primary">
           <div class="panel-heading">
             <h3 class="panel-title"></h3>
           </div>
           <div id="sample-metadata" class="panel-body"></div>
-        </div>
+        </div> -->
+    <div class="row align-items-center">
+      <div class="col-md-12 align-items-center">
+          <div id="scatter"></div>
       </div>
-      <div class="col-md-9">
-        <div id="scatter"></div>
-      </div>
-      <!-- <div class="col-md-5">
-        <div id="gauge"></div>
+      <!-- <div class="col-md-6 align-items-center">
+        <div id="plotTop10"></div>
       </div> -->
     </div>
-  </div>
   <div class="row justify-content-center">
     <div class="col-md-12">
       <div id="table2"></div>

@@ -56,7 +56,12 @@ function buildCharts2(department) {
     };
     
     var data = [trace1, trace2, trace3, trace4, trace5];
-    var layout = {barmode: 'group'}
+    var layout = {barmode: 'group',
+                    margin: {l: 50,
+                              r: 50,
+                              b: 50,
+                              t: 50,
+                              pad: 4}}
     scatter = document.getElementById("scatter");
     Plotly.newPlot("scatter", data, layout, {responsive: true})
 
@@ -85,6 +90,77 @@ function buildCharts2(department) {
   }); 
 };
 
+
+// ///// top 10 departments
+// function buildChartsTop10(department) {
+
+//   // @TODO: Use `d3.json` to fetch the sample data for the plots
+//   var scatterURL =  `/bubble2/${department}`;
+//   d3.json(scatterURL).then(function(data){
+//     // our data dict
+//     var dict = [];
+//     for (var c = 0; c < data.position.length; c++) {
+//       dict.push({
+//           "position": data.position[c],
+//           "salary2014": data["2014"][c],
+//           "salary2015": data["2015"][c],
+//           "salary2016": data["2016"][c],
+//           "salary2017": data["2017"][c],
+//           "salary2018": data["2018"][c]
+//       });
+//     }
+//     dict.sort(function(a, b) {
+//       return parseFloat(b.total_salary) - parseFloat(a.total_salary);
+//     });
+//     dict = dict.slice(0, 10);
+
+//     var trace1 = {
+//       x: dict.map(row => row.position),
+//       y: dict.map(row => row.salary2014),
+//       // mode: 'markers',
+//       type: 'bar',
+//       name: "2014"
+//     };
+    
+//     var trace2 = {
+//       x: dict.map(row => row.position),
+//       y: dict.map(row => row.salary2015),
+//       // mode: 'markers',
+//       type: 'bar',
+//       name: "2015"
+//     };
+
+//     var trace3 = {
+//       x: dict.map(row => row.position),
+//       y: dict.map(row => row.salary2016),
+//       // mode: 'markers',
+//       type: 'bar',
+//       name: "2016"
+//     };
+    
+//     var trace4 = {
+//       x: dict.map(row => row.position),
+//       y: dict.map(row => row.salary2017),
+//       // mode: 'markers',
+//       type: 'bar',
+//       name: "2017"
+//     };
+
+//     var trace5 = {
+//       x: dict.map(row => row.position),
+//       y: dict.map(row => row.salary2018),
+//       // mode: 'markers',
+//       type: 'bar',
+//       name: "2018"
+//     };
+    
+//     var data = [trace1, trace2, trace3, trace4, trace5];
+//     var layout = {barmode: 'group'}
+//     scatter = document.getElementById("plotTop10");
+//     Plotly.newPlot("scatter", data, layout, {responsive: true})
+//   })
+// }
+
 function init2() {
   // Grab a reference to the dropdown select element
     var selector = d3.select("#selDataset2");
@@ -105,7 +181,6 @@ function init2() {
 
 // Initialize the dashboard
 init2();
-
 
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected

@@ -68,7 +68,7 @@ function buildCharts(year) {
           family: 'Courier New, monospace',
           size: 24
         },
-      margin: {"t": 0, "b": 0, "l": 0, "r": 0},
+      automargin: true,
       showlegend: true
       }
     };
