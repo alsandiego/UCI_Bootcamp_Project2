@@ -10,28 +10,6 @@ function buildCharts(year) {
     // var item = data.item;
     var total_salary = data.total_salary;
     var department = data.department;
-    
-
-    // // Bubble Chart using the data
-    // var trace1 = {
-    //   x: department,
-    //   y: total_salary,
-    //   text: department,
-    //   mode: 'markers',
-    //   marker: {
-    //   size: total_salary,
-    //   color: department
-    //   }
-    // };
-    
-    // var data_bubble = [trace1];
-    
-    // var layout = {
-    //   xaxis: { title: 'Departments'}
-    // };
-    
-    // bubble = document.getElementById("bubble");
-    // Plotly.newPlot(bubble, data_bubble, layout);
 
     /// build Bubble chart
     var dict = [];

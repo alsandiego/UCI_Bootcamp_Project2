@@ -1,7 +1,6 @@
 ////////////////////////////
 // PAGE 2 - VIEW BY DEPT //
 ///////////////////////////
-
 function buildCharts2(department) {
 
   // @TODO: Use `d3.json` to fetch the sample data for the plots
@@ -15,6 +14,7 @@ function buildCharts2(department) {
     var salary2017 = data["2017"]
     var salary2018 = data["2018"]
 
+    /////// show group bar chart
     var trace1 = {
       x: position,
       y: salary2014,
@@ -90,77 +90,6 @@ function buildCharts2(department) {
   }); 
 };
 
-
-// ///// top 10 departments
-// function buildChartsTop10(department) {
-
-//   // @TODO: Use `d3.json` to fetch the sample data for the plots
-//   var scatterURL =  `/bubble2/${department}`;
-//   d3.json(scatterURL).then(function(data){
-//     // our data dict
-//     var dict = [];
-//     for (var c = 0; c < data.position.length; c++) {
-//       dict.push({
-//           "position": data.position[c],
-//           "salary2014": data["2014"][c],
-//           "salary2015": data["2015"][c],
-//           "salary2016": data["2016"][c],
-//           "salary2017": data["2017"][c],
-//           "salary2018": data["2018"][c]
-//       });
-//     }
-//     dict.sort(function(a, b) {
-//       return parseFloat(b.total_salary) - parseFloat(a.total_salary);
-//     });
-//     dict = dict.slice(0, 10);
-
-//     var trace1 = {
-//       x: dict.map(row => row.position),
-//       y: dict.map(row => row.salary2014),
-//       // mode: 'markers',
-//       type: 'bar',
-//       name: "2014"
-//     };
-    
-//     var trace2 = {
-//       x: dict.map(row => row.position),
-//       y: dict.map(row => row.salary2015),
-//       // mode: 'markers',
-//       type: 'bar',
-//       name: "2015"
-//     };
-
-//     var trace3 = {
-//       x: dict.map(row => row.position),
-//       y: dict.map(row => row.salary2016),
-//       // mode: 'markers',
-//       type: 'bar',
-//       name: "2016"
-//     };
-    
-//     var trace4 = {
-//       x: dict.map(row => row.position),
-//       y: dict.map(row => row.salary2017),
-//       // mode: 'markers',
-//       type: 'bar',
-//       name: "2017"
-//     };
-
-//     var trace5 = {
-//       x: dict.map(row => row.position),
-//       y: dict.map(row => row.salary2018),
-//       // mode: 'markers',
-//       type: 'bar',
-//       name: "2018"
-//     };
-    
-//     var data = [trace1, trace2, trace3, trace4, trace5];
-//     var layout = {barmode: 'group'}
-//     scatter = document.getElementById("plotTop10");
-//     Plotly.newPlot("scatter", data, layout, {responsive: true})
-//   })
-// }
-
 function init2() {
   // Grab a reference to the dropdown select element
     var selector = d3.select("#selDataset2");
@@ -195,23 +124,25 @@ function optionChanged(newSample) {
   // buildMetadata(newSample);
 }
 
+///// show Total Salary Pie Chart
 function pieTotalSalary(department) {
   // @TODO: Use `d3.json` to fetch the sample data for the plots
   var scatterURL =  `/bubble2/${department}`;
   d3.json(scatterURL).then(function(data){
     // our data dict
-    var position = data.position
-    var salary2014 = data["2014"]
-    var salary2015 = data["2015"]
-    var salary2016 = data["2016"]
-    var salary2017 = data["2017"]
-    var salary2018 = data["2018"]
-    var sumsalary = salary2014+salary2015+salary2016+salary2017+salary2018
+    var dict = [];
+    for (var c = 0; c < data.position.length; c++) {
+      dict.push({
+          "position": data.position[c],
+          "total_salary": data["2014"][c]+data["2015"][c]+data["2016"][c]+data["2017"][c]+data["2018"][c]
+      });
+    }
+
 
     var data_pie = [{
       type: "pie",
-      values: sumsalary,
-      labels: position,
+      values: dict.map(row => row.total_salary),
+      labels: dict.map(row => row.position),
       textinfo: "label+percent",
       textposition: "inside",
       showlegend: false
@@ -236,6 +167,7 @@ function pieTotalSalary(department) {
 })
 }
 
+/////// show Top 10 Position 
 function top10position(department) {
   var scatterURL =  `/bubble2/${department}`;
   d3.json(scatterURL).then(function(data){
@@ -288,23 +220,26 @@ function buildCanvas2(department) {
         // @TODO: Use `d3.json` to fetch the sample data for the plots
     var scatterURL =  `/bubble2/${department}`;
     d3.json(scatterURL).then(function(data){
-      // our data dict
-      var position = data.position
-      var salary2014 = data["2014"]
-      var salary2015 = data["2015"]
-      var salary2016 = data["2016"]
-      var salary2017 = data["2017"]
-      var salary2018 = data["2018"]
-      var sumsalary = salary2014+salary2015+salary2016+salary2017+salary2018
+    // our data dict
+    var dict = [];
+    for (var c = 0; c < data.position.length; c++) {
+      dict.push({
+          "position": data.position[c],
+          "total_salary": data["2014"][c]+data["2015"][c]+data["2016"][c]+data["2017"][c]+data["2018"][c]
+      });
+    }
+    dict.sort(function(a, b) {
+      return parseFloat(b.total_salary) - parseFloat(a.total_salary);
+    });
           /////////////  test canvas chart
     var chart_config =
       {
         type: 'bar',
         data: {
-            labels: position,
+            labels: dict.map(row => row.position),
             datasets: [{
                 label: 'Department Positions Total Salary',
-                data: sumsalary,
+                data: dict.map(row => row.total_salary),
                 // backgroundColor: [
                 //     'rgba(255, 99, 132, 0.2)',
                 //     'rgba(54, 162, 235, 0.2)',
@@ -335,7 +270,7 @@ function buildCanvas2(department) {
     }}
     var ctx = document.getElementById("tableCanvas");
     myChart = new Chart(ctx, chart_config)
-        
+
       });
 };
 
@@ -343,4 +278,4 @@ function clearBubble2()
 {
   myChart.destroy()
   document.getElementById("tableCanvas").innerHTML = "";
-}
+} 
