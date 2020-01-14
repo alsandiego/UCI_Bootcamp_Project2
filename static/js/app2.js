@@ -178,6 +178,7 @@ function init2() {
       buildCharts2(firstData2);
       pieTotalSalary(firstData2);
       top10position(firstData2);
+      buildCanvas2(firstData2)
     });
   }
 
@@ -186,9 +187,11 @@ init2();
 
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
+  clearBubble2()
   buildCharts2(newSample);
   pieTotalSalary(newSample);
   top10position(newSample);
+  buildCanvas2(newSample);
   // buildMetadata(newSample);
 }
 
@@ -276,4 +279,68 @@ function top10position(department) {
     Plotly.newPlot(pie, data_pie, layout_pie, { responsive: true });
 
 })
+}
+
+var myChart;
+
+function buildCanvas2(department) {
+
+        // @TODO: Use `d3.json` to fetch the sample data for the plots
+    var scatterURL =  `/bubble2/${department}`;
+    d3.json(scatterURL).then(function(data){
+      // our data dict
+      var position = data.position
+      var salary2014 = data["2014"]
+      var salary2015 = data["2015"]
+      var salary2016 = data["2016"]
+      var salary2017 = data["2017"]
+      var salary2018 = data["2018"]
+      var sumsalary = salary2014+salary2015+salary2016+salary2017+salary2018
+          /////////////  test canvas chart
+    var chart_config =
+      {
+        type: 'bar',
+        data: {
+            labels: position,
+            datasets: [{
+                label: 'Department Positions Total Salary',
+                data: sumsalary,
+                // backgroundColor: [
+                //     'rgba(255, 99, 132, 0.2)',
+                //     'rgba(54, 162, 235, 0.2)',
+                //     'rgba(255, 206, 86, 0.2)',
+                //     'rgba(75, 192, 192, 0.2)',
+                //     'rgba(153, 102, 255, 0.2)',
+                //     'rgba(255, 159, 64, 0.2)'
+                // ],
+                // borderColor: [
+                //     'rgba(255, 99, 132, 1)',
+                //     'rgba(54, 162, 235, 1)',
+                //     'rgba(255, 206, 86, 1)',
+                //     'rgba(75, 192, 192, 1)',
+                //     'rgba(153, 102, 255, 1)',
+                //     'rgba(255, 159, 64, 1)'
+                // ],
+                borderWidth: 1
+            }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+    }}
+    var ctx = document.getElementById("tableCanvas");
+    myChart = new Chart(ctx, chart_config)
+        
+      });
+};
+
+function clearBubble2()
+{
+  myChart.destroy()
+  document.getElementById("tableCanvas").innerHTML = "";
 }
